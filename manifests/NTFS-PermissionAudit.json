@@ -1,0 +1,115 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: NTFS-PermissionAudit",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:/Users/larro/Projects/NTFS-PermissionAudit"
+  },
+  "tools": [
+    {
+      "name": "Get-BrokenInheritance",
+      "description": "Finds folders where NTFS permission inheritance has been disabled.",
+      "function": "Get-BrokenInheritance",
+      "parameters": {
+        "MaxDepth": {
+          "type": "Int32",
+          "description": "Maximum folder recursion depth. Defaults to 3.",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "Path": {
+          "type": "String[]",
+          "description": "One or more file system paths to scan.",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "Get-DirectUserACEs",
+      "description": "Finds ACL entries assigned directly to user accounts rather than groups.",
+      "function": "Get-DirectUserACEs",
+      "parameters": {
+        "Path": {
+          "type": "String[]",
+          "description": "One or more file system paths to scan. Accepts pipeline input.",
+          "required": true
+        },
+        "ExcludeBuiltIn": {
+          "type": "SwitchParameter",
+          "description": "When set (default: true), excludes built-in accounts such as NT AUTHORITY\\SYSTEM,\r\nBUILTIN\\Administrators, NT AUTHORITY\\LOCAL SERVICE, etc. These are expected to have\r\ndirect ACEs."
+        },
+        "MaxDepth": {
+          "type": "Int32",
+          "description": "Maximum folder recursion depth. Defaults to 3 to prevent runaway scans.",
+          "minimum": 1,
+          "maximum": 20
+        }
+      }
+    },
+    {
+      "name": "Get-NestedGroupReport",
+      "description": "Identifies security groups in ACLs that are nested beyond a safe depth.",
+      "function": "Get-NestedGroupReport",
+      "parameters": {
+        "Path": {
+          "type": "String[]",
+          "description": "One or more file system paths to scan.",
+          "required": true
+        },
+        "MaxNestingDepth": {
+          "type": "Int32",
+          "description": "The maximum acceptable group nesting depth. Groups nested deeper than this value\r\nare flagged. Defaults to 3.",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "MaxDepth": {
+          "type": "Int32",
+          "description": "Maximum folder recursion depth for scanning. Defaults to 3.",
+          "minimum": 1,
+          "maximum": 20
+        }
+      }
+    },
+    {
+      "name": "Get-SharePermissionReport",
+      "description": "Audits SMB share-level permissions for compliance issues.",
+      "function": "Get-SharePermissionReport",
+      "parameters": {
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more computer names to audit. Defaults to localhost."
+        },
+        "ExcludeDefault": {
+          "type": "SwitchParameter",
+          "description": "When specified, excludes default administrative shares (ADMIN$, C$, D$, IPC$, etc.)."
+        }
+      }
+    },
+    {
+      "name": "Invoke-PermissionAudit",
+      "description": "Orchestrates a full NTFS and share permission audit and generates an HTML dashboard report.",
+      "function": "Invoke-PermissionAudit",
+      "parameters": {
+        "Path": {
+          "type": "String[]",
+          "description": "One or more file system paths to audit. Each path is scanned recursively up to MaxDepth.",
+          "required": true
+        },
+        "IncludeInherited": {
+          "type": "SwitchParameter",
+          "description": "When specified, includes inherited ACEs in the direct user ACE report. By default only\r\nexplicitly assigned (non-inherited) ACEs are flagged."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory where the HTML report will be saved. Defaults to the current directory."
+        },
+        "MaxDepth": {
+          "type": "Int32",
+          "description": "Maximum folder recursion depth for NTFS checks. Prevents runaway scans on deep trees.\r\nDefaults to 3.",
+          "minimum": 1,
+          "maximum": 20
+        }
+      }
+    }
+  ]
+}

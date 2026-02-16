@@ -1,0 +1,75 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: GPO-HealthAudit",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:/Users/larro/Projects/GPO-HealthAudit"
+  },
+  "tools": [
+    {
+      "name": "Get-EmptyGPOs",
+      "description": "Finds Group Policy Objects with no settings configured.",
+      "function": "Get-EmptyGPOs",
+      "parameters": {
+        "IncludeDisabledSections": {
+          "type": "SwitchParameter",
+          "description": "Also report GPOs where a configuration section (Computer or User) is disabled\r\nbut still has settings configured. These settings are dormant and may indicate\r\na misconfiguration."
+        }
+      }
+    },
+    {
+      "name": "Get-GPOPermissionReport",
+      "description": "Audits Group Policy Object permissions for common security and application issues.",
+      "function": "Get-GPOPermissionReport",
+      "parameters": {
+        "IncludeDefaultPermissions": {
+          "type": "SwitchParameter",
+          "description": "Also include GPOs with standard/healthy permissions in the output. By default,\r\nonly GPOs with issues are returned."
+        }
+      }
+    },
+    {
+      "name": "Get-StaleGPOs",
+      "description": "Finds Group Policy Objects that have not been modified within a given threshold.",
+      "function": "Get-StaleGPOs",
+      "parameters": {
+        "IncludeLinked": {
+          "type": "SwitchParameter",
+          "description": "Include stale GPOs that are still linked to OUs. By default, only stale GPOs\r\nthat are also unlinked are returned."
+        },
+        "DaysStale": {
+          "type": "Int32",
+          "description": "Number of days since last modification to consider a GPO stale. Must be between\r\n30 and 3650. Default is 365.",
+          "minimum": 30,
+          "maximum": 3650
+        }
+      }
+    },
+    {
+      "name": "Get-UnlinkedGPOs",
+      "description": "Finds Group Policy Objects that are not linked to any OU, site, or domain.",
+      "function": "Get-UnlinkedGPOs"
+    },
+    {
+      "name": "Invoke-GPOHealthAudit",
+      "description": "Runs a comprehensive Group Policy health audit and generates an HTML dashboard.",
+      "function": "Invoke-GPOHealthAudit",
+      "parameters": {
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory where the HTML report will be written. The file is named\r\nGPO-HealthAudit_<domain>_<date>.html. Defaults to the current directory."
+        },
+        "DaysStale": {
+          "type": "Int32",
+          "description": "Number of days since last modification to flag a GPO as stale. Must be between\r\n30 and 3650. Default is 365.",
+          "minimum": 30,
+          "maximum": 3650
+        },
+        "IncludeDisabled": {
+          "type": "SwitchParameter",
+          "description": "Include GPOs with disabled-but-configured sections in the Empty GPOs check."
+        }
+      }
+    }
+  ]
+}

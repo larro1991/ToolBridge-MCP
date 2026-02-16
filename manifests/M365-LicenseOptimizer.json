@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: M365-LicenseOptimizer",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:/Users/larro/Projects/M365-LicenseOptimizer"
+  },
+  "tools": [
+    {
+      "name": "Get-InactiveLicensedUsers",
+      "description": "Identifies licensed users who have not signed in within the specified threshold.",
+      "function": "Get-InactiveLicensedUsers",
+      "parameters": {
+        "IncludeDisabled": {
+          "type": "SwitchParameter",
+          "description": "Include disabled user accounts in the analysis. Default: included automatically\r\nas DISABLED WITH LICENSE findings."
+        },
+        "IncludeGuests": {
+          "type": "SwitchParameter",
+          "description": "Include guest (external) users in the analysis."
+        },
+        "DaysInactive": {
+          "type": "Int32",
+          "description": "Number of days without sign-in to consider a user inactive. Default: 90.",
+          "minimum": 1,
+          "maximum": 365
+        }
+      }
+    },
+    {
+      "name": "Get-LicenseInventory",
+      "description": "Retrieves the full Microsoft 365 license inventory for the tenant.",
+      "function": "Get-LicenseInventory"
+    },
+    {
+      "name": "Get-LicenseSavingsReport",
+      "description": "Aggregates all license optimization findings into a savings summary.",
+      "function": "Get-LicenseSavingsReport",
+      "parameters": {
+        "DaysInactive": {
+          "type": "Int32",
+          "description": "Number of days without sign-in to consider a user inactive. Default: 90.",
+          "minimum": 1,
+          "maximum": 365
+        }
+      }
+    },
+    {
+      "name": "Get-UnderutilizedLicenses",
+      "description": "Identifies users with expensive licenses who are not using premium features.",
+      "function": "Get-UnderutilizedLicenses",
+      "parameters": {
+        "DaysInactive": {
+          "type": "Int32",
+          "description": "Number of days without sign-in to flag as inactive. Default: 90.",
+          "minimum": 1,
+          "maximum": 365
+        }
+      }
+    },
+    {
+      "name": "Invoke-LicenseOptimization",
+      "description": "Orchestrates a full Microsoft 365 license optimization analysis.",
+      "function": "Invoke-LicenseOptimization",
+      "parameters": {
+        "IncludeGuests": {
+          "type": "SwitchParameter",
+          "description": "Include guest (external) users in the inactive user analysis."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory where the HTML report will be saved. Defaults to current directory."
+        },
+        "DaysInactive": {
+          "type": "Int32",
+          "description": "Number of days without sign-in to flag as inactive. Default: 90.",
+          "minimum": 1,
+          "maximum": 365
+        }
+      }
+    }
+  ]
+}

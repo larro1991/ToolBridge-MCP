@@ -1,0 +1,154 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: LocalPolicy-ToGPO",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:/Users/larro/Projects/LocalPolicy-ToGPO"
+  },
+  "tools": [
+    {
+      "name": "Compare-PolicyCompliance",
+      "description": "Compares local policy on a server against a GPO to verify migration completeness.",
+      "function": "Compare-PolicyCompliance",
+      "parameters": {
+        "GPOName": {
+          "type": "String",
+          "description": "The GPO to compare against.",
+          "required": true
+        },
+        "CompareType": {
+          "type": "String",
+          "description": "What to compare. Valid values: Firewall, SecurityPolicy, Both. Defaults to Both.",
+          "enum": [
+            "Firewall",
+            "SecurityPolicy",
+            "Both"
+          ]
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Optional file path to save an HTML compliance report."
+        },
+        "ComputerName": {
+          "type": "String",
+          "description": "The server to compare local policy from.",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "Copy-FirewallToGPO",
+      "description": "Copies local firewall rules into a domain GPO. Writes to GPO only, never touches local policy.",
+      "function": "Copy-FirewallToGPO",
+      "parameters": {
+        "GPOName": {
+          "type": "String",
+          "description": "Name of the GPO to create the firewall rules in. If -CreateGPO is specified and\r\nGPOName is not provided, the name defaults to \"Firewall - ServerName - Migrated YYYY-MM-DD\".",
+          "required": true
+        },
+        "ProfileFilter": {
+          "type": "String",
+          "description": "Filter source rules by firewall profile. Valid values: Domain, Private, Public, Any.\r\nDefaults to Any.",
+          "enum": [
+            "Domain",
+            "Private",
+            "Public",
+            "Any"
+          ]
+        },
+        "EnabledOnly": {
+          "type": "SwitchParameter",
+          "description": "When specified (default), only migrates rules that are currently enabled."
+        },
+        "SourceComputer": {
+          "type": "String",
+          "description": "The server to read local firewall rules from.",
+          "required": true
+        },
+        "CreateGPO": {
+          "type": "SwitchParameter",
+          "description": "If specified, creates the GPO if it does not already exist."
+        }
+      }
+    },
+    {
+      "name": "Copy-SecurityPolicyToGPO",
+      "description": "Copies local security policy settings into a domain GPO. Writes to GPO only, never touches local policy.",
+      "function": "Copy-SecurityPolicyToGPO",
+      "parameters": {
+        "GPOName": {
+          "type": "String",
+          "description": "Name of the GPO to write the security policy settings into.",
+          "required": true
+        },
+        "Force": {
+          "type": "SwitchParameter"
+        },
+        "SourceComputer": {
+          "type": "String",
+          "description": "The server to read local security policy from.",
+          "required": true
+        },
+        "CreateGPO": {
+          "type": "SwitchParameter",
+          "description": "If specified, creates the GPO if it does not already exist."
+        },
+        "Categories": {
+          "type": "String[]",
+          "description": "Which security policy categories to migrate. Valid values:\r\nSystemAccess, AuditPolicy, UserRights, SecurityOptions, All.\r\nDefaults to All.",
+          "enum": [
+            "SystemAccess",
+            "AuditPolicy",
+            "UserRights",
+            "SecurityOptions",
+            "All"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get-LocalFirewallPolicy",
+      "description": "Reads local firewall rules from a server. Never modifies local policy.",
+      "function": "Get-LocalFirewallPolicy",
+      "parameters": {
+        "ProfileFilter": {
+          "type": "String",
+          "description": "Filter rules by firewall profile. Valid values: Domain, Private, Public, Any.\r\nDefaults to Any (all profiles).",
+          "enum": [
+            "Domain",
+            "Private",
+            "Public",
+            "Any"
+          ]
+        },
+        "EnabledOnly": {
+          "type": "SwitchParameter",
+          "description": "When specified (default), only returns rules that are currently enabled.\r\nUse -EnabledOnly:$false to include disabled rules."
+        },
+        "ExportPath": {
+          "type": "String",
+          "description": "Optional file path to save the results as JSON for review before migration."
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more server names to read firewall rules from. Defaults to localhost.\r\nAccepts pipeline input."
+        }
+      }
+    },
+    {
+      "name": "Get-LocalSecurityPolicy",
+      "description": "Reads local security policy settings from a server. Never modifies local policy.",
+      "function": "Get-LocalSecurityPolicy",
+      "parameters": {
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more server names to read security policy from. Defaults to localhost."
+        },
+        "ExportPath": {
+          "type": "String",
+          "description": "Optional file path to save the structured results as JSON for review."
+        }
+      }
+    }
+  ]
+}

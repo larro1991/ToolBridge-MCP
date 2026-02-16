@@ -1,0 +1,135 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: Certificate-LifecycleMonitor",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:/Users/larro/Projects/Certificate-LifecycleMonitor"
+  },
+  "tools": [
+    {
+      "name": "Get-CertificateStoreReport",
+      "description": "Produces a comprehensive inventory of certificates in a store.",
+      "function": "Get-CertificateStoreReport",
+      "parameters": {
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more computer names to scan. Accepts pipeline input.\r\nDefaults to localhost."
+        },
+        "IncludeExpired": {
+          "type": "SwitchParameter",
+          "description": "When specified, includes certificates whose NotAfter date has passed."
+        },
+        "StoreName": {
+          "type": "String",
+          "description": "Certificate store to inventory. Valid values: My, Root, CA,\r\nTrustedPeople. Defaults to My.",
+          "enum": [
+            "My",
+            "Root",
+            "CA",
+            "TrustedPeople"
+          ]
+        },
+        "StoreLocation": {
+          "type": "String",
+          "description": "Certificate store location. Valid values: LocalMachine, CurrentUser.\r\nDefaults to LocalMachine.",
+          "enum": [
+            "LocalMachine",
+            "CurrentUser"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get-ExpiringCertificates",
+      "description": "Scans certificate stores for expiring or expired certificates.",
+      "function": "Get-ExpiringCertificates",
+      "parameters": {
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more computer names to scan. Accepts pipeline input.\r\nDefaults to localhost."
+        },
+        "DaysUntilExpiration": {
+          "type": "Int32",
+          "description": "Warning threshold in days. Certificates expiring within this window are\r\nflagged WARNING; those within 7 days are flagged CRITICAL; those already\r\npast NotAfter are flagged EXPIRED. Defaults to 30."
+        },
+        "StoreName": {
+          "type": "String",
+          "description": "Certificate store name to scan. Defaults to \"My\" (Personal)."
+        },
+        "StoreLocation": {
+          "type": "String",
+          "description": "Certificate store location. Defaults to LocalMachine."
+        }
+      }
+    },
+    {
+      "name": "Get-IISCertificateReport",
+      "description": "Reports on certificates bound to IIS sites.",
+      "function": "Get-IISCertificateReport",
+      "parameters": {
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more computer names to scan. Accepts pipeline input.\r\nDefaults to localhost."
+        }
+      }
+    },
+    {
+      "name": "Get-WeakCertificateReport",
+      "description": "Identifies certificates with weak or deprecated cryptography.",
+      "function": "Get-WeakCertificateReport",
+      "parameters": {
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more computer names to scan. Accepts pipeline input.\r\nDefaults to localhost."
+        },
+        "MinimumKeyLength": {
+          "type": "Int32",
+          "description": "Minimum acceptable RSA key length in bits. Certificates with shorter\r\nkeys are flagged. Defaults to 2048."
+        }
+      }
+    },
+    {
+      "name": "Invoke-CertificateAudit",
+      "description": "Orchestrates a full certificate lifecycle audit across one or more servers.",
+      "function": "Invoke-CertificateAudit",
+      "parameters": {
+        "SendEmail": {
+          "type": "SwitchParameter",
+          "description": "When specified, sends the completed report via email. Requires\r\n-SmtpServer, -EmailTo, and -EmailFrom."
+        },
+        "DaysCritical": {
+          "type": "Int32",
+          "description": "Number of days before expiration to flag as CRITICAL. Defaults to 7."
+        },
+        "SmtpServer": {
+          "type": "String",
+          "description": "SMTP relay server for email delivery."
+        },
+        "DaysWarning": {
+          "type": "Int32",
+          "description": "Number of days before expiration to flag as WARNING. Defaults to 30."
+        },
+        "IncludeIIS": {
+          "type": "SwitchParameter",
+          "description": "When specified, also scans IIS HTTPS bindings on each target computer."
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more computer names to audit. Defaults to localhost."
+        },
+        "EmailTo": {
+          "type": "String[]",
+          "description": "Recipient email address(es)."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory where the HTML report is saved. Defaults to the current\r\ndirectory. The report filename is generated automatically with a\r\ntimestamp."
+        },
+        "EmailFrom": {
+          "type": "String",
+          "description": "Sender email address."
+        }
+      }
+    }
+  ]
+}
