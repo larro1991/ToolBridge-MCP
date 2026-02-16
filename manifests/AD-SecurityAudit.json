@@ -1,0 +1,126 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: AD-SecurityAudit",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:\\Users\\larro\\Projects\\AD-SecurityAudit\\AD-SecurityAudit.psd1"
+  },
+  "tools": [
+    {
+      "name": "Get-LocalAdminAudit",
+      "description": "Audits local administrator group membership across domain computers.",
+      "function": "Get-LocalAdminAudit",
+      "parameters": {
+        "SearchBase": {
+          "type": "String",
+          "description": "OU to scope the computer search. Defaults to entire domain."
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "Specific computer name(s) to audit instead of querying AD."
+        },
+        "ExpectedAdmins": {
+          "type": "String[]",
+          "description": "List of accounts that are expected/approved local admins.\r\nThese will be flagged as \"Expected\" rather than \"Unexpected\" in results.\r\nDefaults to: Administrator, Domain Admins."
+        }
+      }
+    },
+    {
+      "name": "Get-OrphanedSIDs",
+      "description": "Scans file/folder ACLs for orphaned SIDs (deleted accounts that still have permissions).",
+      "function": "Get-OrphanedSIDs",
+      "parameters": {
+        "MaxDepth": {
+          "type": "Int32",
+          "description": "Maximum folder recursion depth. Defaults to unlimited."
+        },
+        "RemoveOrphans": {
+          "type": "SwitchParameter",
+          "description": "If specified, removes the orphaned SID entries from ACLs.\r\nUse with -WhatIf to preview changes."
+        },
+        "Path": {
+          "type": "String[]",
+          "description": "One or more UNC or local paths to scan.",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "Get-PrivilegedGroupReport",
+      "description": "Audits membership of privileged Active Directory groups.",
+      "function": "Get-PrivilegedGroupReport",
+      "parameters": {
+        "AdditionalGroups": {
+          "type": "String[]",
+          "description": "Additional group names to include in the audit beyond the defaults."
+        },
+        "DaysInactive": {
+          "type": "Int32",
+          "description": "Threshold to flag inactive privileged accounts. Defaults to 30 days."
+        }
+      }
+    },
+    {
+      "name": "Get-StaleADObjects",
+      "description": "Finds stale (inactive) user and computer accounts in Active Directory.",
+      "function": "Get-StaleADObjects",
+      "parameters": {
+        "SearchBase": {
+          "type": "String",
+          "description": "OU to scope the search. Defaults to entire domain."
+        },
+        "ObjectType": {
+          "type": "String",
+          "description": "Filter by object type: User, Computer, or Both. Defaults to Both.",
+          "enum": [
+            "User",
+            "Computer",
+            "Both"
+          ]
+        },
+        "ExcludeOU": {
+          "type": "String[]",
+          "description": "One or more OU distinguished names to exclude from results (e.g., service account OUs)."
+        },
+        "DaysInactive": {
+          "type": "Int32",
+          "description": "Number of days since last logon to consider an account stale. Defaults to 90."
+        }
+      }
+    },
+    {
+      "name": "Invoke-ADSecurityAudit",
+      "description": "Runs a comprehensive Active Directory security audit and generates an HTML report.",
+      "function": "Invoke-ADSecurityAudit",
+      "parameters": {
+        "SharePaths": {
+          "type": "String[]",
+          "description": "One or more UNC paths to scan for orphaned SIDs. If not specified, orphaned\r\nSID check is skipped unless specific paths are provided."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory to save the HTML report. Defaults to .\\Reports."
+        },
+        "SkipOrphanedSIDs": {
+          "type": "SwitchParameter",
+          "description": "Skip orphaned SID scanning."
+        },
+        "SkipLocalAdminAudit": {
+          "type": "SwitchParameter",
+          "description": "Skip the local admin check (useful if network scanning is slow or restricted)."
+        },
+        "DaysInactive": {
+          "type": "Int32",
+          "description": "Threshold for flagging stale accounts. Defaults to 90 days."
+        },
+        "LogPath": {
+          "type": "String"
+        },
+        "ComputerSearchBase": {
+          "type": "String",
+          "description": "OU to scope the local admin audit. Defaults to entire domain."
+        }
+      }
+    }
+  ]
+}

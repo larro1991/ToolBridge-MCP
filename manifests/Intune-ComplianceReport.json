@@ -1,0 +1,94 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: Intune-ComplianceReport",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:\\Users\\larro\\Projects\\Intune-ComplianceReport\\Intune-ComplianceReport.psd1"
+  },
+  "tools": [
+    {
+      "name": "Get-IntuneAppInventory",
+      "description": "Audits Intune managed applications, install status, and assignment health.",
+      "function": "Get-IntuneAppInventory",
+      "parameters": {
+        "FailureThresholdPercent": {
+          "type": "Int32",
+          "description": "Percentage of failed installs before flagging an app. Defaults to 10.",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "IncludeStore": {
+          "type": "SwitchParameter",
+          "description": "Include store apps (iOS App Store, Google Play, Microsoft Store). Excluded by default."
+        }
+      }
+    },
+    {
+      "name": "Get-IntuneAutopilotStatus",
+      "description": "Reports on Windows Autopilot device registration and deployment profile status.",
+      "function": "Get-IntuneAutopilotStatus",
+      "parameters": {
+        "IncludeDeploymentProfiles": {
+          "type": "Boolean",
+          "description": "Include deployment profile details in the report. Defaults to true."
+        }
+      }
+    },
+    {
+      "name": "Get-IntuneDeviceComplianceReport",
+      "description": "Reports on Intune managed device compliance status.",
+      "function": "Get-IntuneDeviceComplianceReport",
+      "parameters": {
+        "OSFilter": {
+          "type": "String",
+          "description": "Filter to a specific OS platform (Windows, iOS, Android, macOS).",
+          "enum": [
+            "Windows",
+            "iOS",
+            "Android",
+            "macOS",
+            "All"
+          ]
+        },
+        "StaleDays": {
+          "type": "Int32",
+          "description": "Days since last check-in before flagging as stale. Defaults to 30.",
+          "minimum": 1,
+          "maximum": 180
+        }
+      }
+    },
+    {
+      "name": "Get-IntunePolicyAssignmentReview",
+      "description": "Reviews Intune configuration profiles and compliance policies for assignment gaps.",
+      "function": "Get-IntunePolicyAssignmentReview",
+      "parameters": {
+        "IncludeCompliance": {
+          "type": "Boolean",
+          "description": "Include compliance policies in addition to configuration profiles. Defaults to true."
+        }
+      }
+    },
+    {
+      "name": "Invoke-IntuneComplianceAudit",
+      "description": "Runs a full Intune compliance audit and generates an HTML dashboard.",
+      "function": "Invoke-IntuneComplianceAudit",
+      "parameters": {
+        "StaleDays": {
+          "type": "Int32",
+          "description": "Number of days since last check-in before a device is considered stale. Defaults to 30.",
+          "minimum": 1,
+          "maximum": 180
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory for the HTML report. Defaults to current directory."
+        },
+        "SkipAutopilot": {
+          "type": "SwitchParameter",
+          "description": "Skip Autopilot status check (useful if Autopilot is not in use)."
+        }
+      }
+    }
+  ]
+}

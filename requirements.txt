@@ -1,0 +1,7 @@
+# ToolBridge-MCP has zero runtime dependencies.
+# The MCP protocol (JSON-RPC over stdio) is implemented directly.
+# This keeps the bridge lightweight and avoids version conflicts.
+#
+# Optional dependencies for development/testing:
+# pytest>=7.0
+# pytest-asyncio>=0.21

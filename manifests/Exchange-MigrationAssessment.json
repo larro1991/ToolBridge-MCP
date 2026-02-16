@@ -1,0 +1,87 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: Exchange-MigrationAssessment",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:\\Users\\larro\\Projects\\Exchange-MigrationAssessment\\Exchange-MigrationAssessment.psd1"
+  },
+  "tools": [
+    {
+      "name": "Get-DistributionGroupAudit",
+      "description": "Audits distribution groups for migration planning.",
+      "function": "Get-DistributionGroupAudit",
+      "parameters": {
+        "IncludeEmpty": {
+          "type": "SwitchParameter",
+          "description": "Include groups with zero members. Default excludes them."
+        }
+      }
+    },
+    {
+      "name": "Get-MailboxInventory",
+      "description": "Inventories all mailboxes with size, type, and migration-relevant details.",
+      "function": "Get-MailboxInventory",
+      "parameters": {
+        "RecipientType": {
+          "type": "String",
+          "description": "Filter by recipient type. Defaults to all mailbox types.",
+          "enum": [
+            "UserMailbox",
+            "SharedMailbox",
+            "RoomMailbox",
+            "EquipmentMailbox",
+            "All"
+          ]
+        },
+        "MinimumSizeGB": {
+          "type": "Double",
+          "description": "Only return mailboxes larger than this size. Useful for identifying large migrations."
+        }
+      }
+    },
+    {
+      "name": "Get-MailFlowRuleExport",
+      "description": "Exports Exchange transport (mail flow) rules for migration review.",
+      "function": "Get-MailFlowRuleExport",
+      "parameters": {
+        "IncludeDisabled": {
+          "type": "SwitchParameter",
+          "description": "Include disabled rules in the export."
+        }
+      }
+    },
+    {
+      "name": "Get-PublicFolderAnalysis",
+      "description": "Analyzes public folders for migration to M365 Groups or shared mailboxes.",
+      "function": "Get-PublicFolderAnalysis",
+      "parameters": {
+        "MaxDepth": {
+          "type": "Int32",
+          "description": "Maximum folder hierarchy depth to report. Defaults to 5."
+        }
+      }
+    },
+    {
+      "name": "Invoke-MigrationAssessment",
+      "description": "Runs a complete Exchange-to-M365 migration pre-assessment.",
+      "function": "Invoke-MigrationAssessment",
+      "parameters": {
+        "LogPath": {
+          "type": "String"
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory for the HTML report and CSV exports. Defaults to .\\Reports."
+        },
+        "SkipPublicFolders": {
+          "type": "SwitchParameter",
+          "description": "Skip the public folder analysis (useful if no public folders exist)."
+        },
+        "ExportCsv": {
+          "type": "SwitchParameter",
+          "description": "Also export detailed data as CSV files alongside the HTML report."
+        }
+      }
+    }
+  ]
+}

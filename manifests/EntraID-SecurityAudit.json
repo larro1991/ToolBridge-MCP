@@ -1,0 +1,98 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: EntraID-SecurityAudit",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:\\Users\\larro\\Projects\\EntraID-SecurityAudit\\EntraID-SecurityAudit.psd1"
+  },
+  "tools": [
+    {
+      "name": "Get-EntraAppPermissionAudit",
+      "description": "Audits Entra ID app registrations for excessive permissions and expiring credentials.",
+      "function": "Get-EntraAppPermissionAudit",
+      "parameters": {
+        "ExpirationWarningDays": {
+          "type": "Int32",
+          "description": "Number of days to warn before credential expiration. Defaults to 30.",
+          "minimum": 1,
+          "maximum": 365
+        }
+      }
+    },
+    {
+      "name": "Get-EntraPrivilegedRoleReview",
+      "description": "Reviews Entra ID privileged role assignments and PIM configuration.",
+      "function": "Get-EntraPrivilegedRoleReview",
+      "parameters": {
+        "MaxGlobalAdmins": {
+          "type": "Int32",
+          "description": "Maximum acceptable number of Global Administrators before flagging. Defaults to 4.",
+          "minimum": 1,
+          "maximum": 20
+        }
+      }
+    },
+    {
+      "name": "Get-EntraSignInAnalysis",
+      "description": "Analyzes Entra ID sign-in logs for suspicious activity and legacy authentication.",
+      "function": "Get-EntraSignInAnalysis",
+      "parameters": {
+        "FailureThreshold": {
+          "type": "Int32",
+          "description": "Number of failed sign-ins per user before flagging. Defaults to 10.",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "DaysBack": {
+          "type": "Int32",
+          "description": "Number of days of sign-in history to analyze. Defaults to 30.",
+          "minimum": 1,
+          "maximum": 90
+        }
+      }
+    },
+    {
+      "name": "Get-EntraUserRiskReport",
+      "description": "Reports on user risk levels, MFA registration status, and authentication methods.",
+      "function": "Get-EntraUserRiskReport",
+      "parameters": {
+        "RiskLevelFilter": {
+          "type": "String",
+          "description": "Filter to a specific risk level. Default returns all users.",
+          "enum": [
+            "High",
+            "Medium",
+            "Low",
+            "None",
+            "All"
+          ]
+        },
+        "IncludeGuests": {
+          "type": "SwitchParameter",
+          "description": "Include guest/external users in the report."
+        }
+      }
+    },
+    {
+      "name": "Invoke-EntraSecurityAudit",
+      "description": "Runs a full Entra ID security audit and generates an HTML dashboard.",
+      "function": "Invoke-EntraSecurityAudit",
+      "parameters": {
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory for the HTML report. Defaults to current directory."
+        },
+        "DaysBack": {
+          "type": "Int32",
+          "description": "Number of days of sign-in history to analyze. Defaults to 30.",
+          "minimum": 1,
+          "maximum": 90
+        },
+        "SkipSignIns": {
+          "type": "SwitchParameter",
+          "description": "Skip sign-in log analysis (useful if you lack AuditLog.Read.All permissions)."
+        }
+      }
+    }
+  ]
+}

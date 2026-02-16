@@ -1,0 +1,120 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: Infra-HealthDashboard",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:\\Users\\larro\\Projects\\Infra-HealthDashboard\\Infra-HealthDashboard.psd1"
+  },
+  "tools": [
+    {
+      "name": "Get-DiskSpaceReport",
+      "description": "Reports disk space usage with configurable warning/critical thresholds.",
+      "function": "Get-DiskSpaceReport",
+      "parameters": {
+        "CriticalPercent": {
+          "type": "Int32",
+          "description": "Usage percentage to trigger Critical status. Defaults to 90."
+        },
+        "ComputerName": {
+          "type": "String",
+          "description": "Server to check. Defaults to the local computer."
+        },
+        "WarningPercent": {
+          "type": "Int32",
+          "description": "Usage percentage to trigger Warning status. Defaults to 80."
+        }
+      }
+    },
+    {
+      "name": "Get-PendingUpdates",
+      "description": "Checks for pending Windows updates on remote servers.",
+      "function": "Get-PendingUpdates",
+      "parameters": {
+        "ComputerName": {
+          "type": "String",
+          "description": "Server to check. Defaults to the local computer."
+        }
+      }
+    },
+    {
+      "name": "Get-ServerInventory",
+      "description": "Collects hardware and OS inventory from a Windows server using CIM.",
+      "function": "Get-ServerInventory",
+      "parameters": {
+        "ComputerName": {
+          "type": "String",
+          "description": "The server to inventory. Defaults to the local computer."
+        }
+      }
+    },
+    {
+      "name": "Get-ServiceHealthReport",
+      "description": "Checks the status of critical Windows services on remote servers.",
+      "function": "Get-ServiceHealthReport",
+      "parameters": {
+        "ComputerName": {
+          "type": "String",
+          "description": "Server to check. Defaults to the local computer."
+        },
+        "ServiceName": {
+          "type": "String[]",
+          "description": "One or more service names to check. Defaults to common infrastructure services."
+        }
+      }
+    },
+    {
+      "name": "Invoke-InfraHealthCheck",
+      "description": "Runs a comprehensive infrastructure health check and generates an HTML dashboard.",
+      "function": "Invoke-InfraHealthCheck",
+      "parameters": {
+        "DiskWarningPercent": {
+          "type": "Int32",
+          "description": "Disk usage percentage to trigger a warning. Defaults to 80.",
+          "minimum": 1,
+          "maximum": 99
+        },
+        "DiskCriticalPercent": {
+          "type": "Int32",
+          "description": "Disk usage percentage to trigger a critical alert. Defaults to 90.",
+          "minimum": 1,
+          "maximum": 99
+        },
+        "SendEmail": {
+          "type": "SwitchParameter",
+          "description": "Send the report via email."
+        },
+        "EmailTo": {
+          "type": "String[]",
+          "description": "Recipient email address(es).",
+          "required": true
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more server names to check. If not specified, queries AD for all\r\nenabled server OS computers."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory for the HTML report. Defaults to .\\Reports."
+        },
+        "SmtpServer": {
+          "type": "String",
+          "description": "SMTP server for sending the report.",
+          "required": true
+        },
+        "SearchBase": {
+          "type": "String",
+          "description": "AD OU to scope the server query. Only used when ComputerName is not specified."
+        },
+        "EmailFrom": {
+          "type": "String",
+          "description": "Sender email address.",
+          "required": true
+        },
+        "CriticalServices": {
+          "type": "String[]",
+          "description": "List of services to monitor. Defaults to common infrastructure services."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: AD-UserLifecycle",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:\\Users\\larro\\Projects\\AD-UserLifecycle\\AD-UserLifecycle.psd1"
+  },
+  "tools": [
+    {
+      "name": "Disable-DepartedUser",
+      "description": "Offboards a departed employee by disabling and archiving their AD account.",
+      "function": "Disable-DepartedUser",
+      "parameters": {
+        "DisabledOU": {
+          "type": "String",
+          "description": "The Distinguished Name of the OU to move disabled accounts to.\r\nExample: \"OU=Disabled Users,DC=contoso,DC=com\"",
+          "required": true
+        },
+        "SkipHomeFolder": {
+          "type": "SwitchParameter",
+          "description": "Skip the home folder archival step."
+        },
+        "ArchivePath": {
+          "type": "String",
+          "description": "The UNC or local path to archive the user's home folder to.\r\nA subfolder named LastName-FirstName-Date will be created."
+        },
+        "LogPath": {
+          "type": "String",
+          "description": "Directory for transcript logs. Defaults to .\\Logs."
+        },
+        "Identity": {
+          "type": "String",
+          "description": "The SAMAccountName of the user to offboard.",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "Export-ADUserReport",
+      "description": "Generates a comprehensive Active Directory user report in HTML or CSV format.",
+      "function": "Export-ADUserReport",
+      "parameters": {
+        "Filter": {
+          "type": "String",
+          "description": "AD filter string. Defaults to all enabled users with email addresses."
+        },
+        "SearchBase": {
+          "type": "String",
+          "description": "The OU Distinguished Name to scope the search. Defaults to the entire domain."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory to save the report. Defaults to current directory."
+        },
+        "DaysInactive": {
+          "type": "Int32",
+          "description": "Flag users who haven't logged in within this many days. Defaults to 90."
+        },
+        "IncludeDisabled": {
+          "type": "SwitchParameter",
+          "description": "Include disabled accounts in the report."
+        },
+        "OutputFormat": {
+          "type": "String",
+          "description": "Output format: HTML, CSV, or Both. Defaults to HTML.",
+          "enum": [
+            "HTML",
+            "CSV",
+            "Both"
+          ]
+        }
+      }
+    },
+    {
+      "name": "New-ADUserFromTemplate",
+      "description": "Creates a new Active Directory user based on a template account.",
+      "function": "New-ADUserFromTemplate",
+      "parameters": {
+        "LastName": {
+          "type": "String",
+          "description": "The user's last name (Surname).",
+          "required": true
+        },
+        "Email": {
+          "type": "String",
+          "description": "The user's email address."
+        },
+        "EnableAccount": {
+          "type": "SwitchParameter",
+          "description": "If specified, the account is enabled immediately. Default is disabled\r\n(requiring manual enablement after verification)."
+        },
+        "TemporaryPassword": {
+          "type": "SecureString",
+          "description": "A SecureString password for the new account. If not provided, a random\r\ncomplex password is generated."
+        },
+        "OfficePhone": {
+          "type": "String",
+          "description": "The user's office phone number."
+        },
+        "Title": {
+          "type": "String",
+          "description": "The user's job title."
+        },
+        "LogPath": {
+          "type": "String",
+          "description": "Directory for transcript logs. Defaults to .\\Logs."
+        },
+        "FirstName": {
+          "type": "String",
+          "description": "The user's first name (GivenName).",
+          "required": true
+        },
+        "Department": {
+          "type": "String",
+          "description": "The user's department. If not specified, inherits from the template."
+        },
+        "CsvPath": {
+          "type": "String",
+          "description": "Path to a CSV file for bulk user creation. Expected columns:\r\nFirstName, LastName, Template, Department, Title, OfficePhone, Email",
+          "required": true
+        },
+        "Template": {
+          "type": "String",
+          "description": "The SAMAccountName of the template user to clone settings from.",
+          "required": true
+        }
+      }
+    }
+  ]
+}

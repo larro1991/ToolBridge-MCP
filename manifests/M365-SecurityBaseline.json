@@ -1,0 +1,85 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: M365-SecurityBaseline",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:\\Users\\larro\\Projects\\M365-SecurityBaseline\\M365-SecurityBaseline.psd1"
+  },
+  "tools": [
+    {
+      "name": "Get-ConditionalAccessReview",
+      "description": "Reviews Conditional Access policies and checks for common gaps.",
+      "function": "Get-ConditionalAccessReview",
+      "parameters": {
+        "IncludeDisabled": {
+          "type": "SwitchParameter",
+          "description": "Include disabled (report-only and off) policies in the review."
+        }
+      }
+    },
+    {
+      "name": "Get-GuestAccessReport",
+      "description": "Reviews guest (external) user accounts in the Microsoft 365 tenant.",
+      "function": "Get-GuestAccessReport",
+      "parameters": {
+        "UnredeemedOnly": {
+          "type": "SwitchParameter",
+          "description": "Only show guests who never accepted their invitation."
+        },
+        "DaysInactive": {
+          "type": "Int32",
+          "description": "Flag guests who haven't signed in within this many days. Defaults to 90."
+        }
+      }
+    },
+    {
+      "name": "Get-MailboxForwardingRules",
+      "description": "Audits all mailbox forwarding rules for potential data exfiltration.",
+      "function": "Get-MailboxForwardingRules",
+      "parameters": {
+        "ExternalOnly": {
+          "type": "SwitchParameter",
+          "description": "Only report rules forwarding to external (non-tenant) domains."
+        }
+      }
+    },
+    {
+      "name": "Get-MFAStatus",
+      "description": "Reports MFA enrollment status for all Microsoft 365 users.",
+      "function": "Get-MFAStatus",
+      "parameters": {
+        "UserType": {
+          "type": "String",
+          "description": "Filter by user type: All, Member, or Guest. Defaults to Member.",
+          "enum": [
+            "All",
+            "Member",
+            "Guest"
+          ]
+        },
+        "IncludeDisabled": {
+          "type": "SwitchParameter",
+          "description": "Include disabled/blocked accounts in the report."
+        }
+      }
+    },
+    {
+      "name": "Invoke-M365SecurityAudit",
+      "description": "Runs a comprehensive Microsoft 365 tenant security audit.",
+      "function": "Invoke-M365SecurityAudit",
+      "parameters": {
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory to save the HTML report. Defaults to .\\Reports."
+        },
+        "SkipConnect": {
+          "type": "SwitchParameter",
+          "description": "Skip the Connect-MgGraph and Connect-ExchangeOnline calls (use if already connected)."
+        },
+        "LogPath": {
+          "type": "String"
+        }
+      }
+    }
+  ]
+}
