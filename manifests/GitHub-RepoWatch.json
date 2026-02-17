@@ -1,0 +1,268 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: GitHub-RepoWatch",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:/Users/larro/Projects/GitHub-RepoWatch"
+  },
+  "tools": [
+    {
+      "name": "Get-PSGalleryStats",
+      "description": "Checks PowerShell Gallery for download stats on published modules.",
+      "function": "Get-PSGalleryStats",
+      "parameters": {
+        "Author": {
+          "type": "String",
+          "description": "PSGallery author name to search for. Defaults to the Owner parameter if used\r\nvia Invoke-RepoWatch."
+        },
+        "StatePath": {
+          "type": "String",
+          "description": "Path to the state JSON file for tracking download count changes."
+        },
+        "ModuleNames": {
+          "type": "String[]",
+          "description": "Specific module names to check. When not specified, auto-discovers modules\r\nby the Author via Find-Module."
+        }
+      }
+    },
+    {
+      "name": "Get-RepoActivity",
+      "description": "Checks all repos for a GitHub user/org for new activity since the last check.",
+      "function": "Get-RepoActivity",
+      "parameters": {
+        "IncludeForks": {
+          "type": "SwitchParameter",
+          "description": "Include forked repositories. By default forks are skipped."
+        },
+        "StatePath": {
+          "type": "String",
+          "description": "Path to the state JSON file for delta tracking."
+        },
+        "ExcludeRepos": {
+          "type": "String[]",
+          "description": "Repository names to skip."
+        },
+        "Token": {
+          "type": "String",
+          "description": "GitHub personal access token. Falls back to $env:GITHUB_TOKEN."
+        },
+        "RepoFilter": {
+          "type": "String[]",
+          "description": "Specific repository names to check. Default checks all public repos."
+        },
+        "SinceDate": {
+          "type": "DateTime",
+          "description": "Explicit cutoff datetime. Overrides SinceHours when specified."
+        },
+        "SinceHours": {
+          "type": "Int32",
+          "description": "Number of hours to look back for activity. Default 24. Range 1-720.",
+          "minimum": 1,
+          "maximum": 720
+        },
+        "Owner": {
+          "type": "String",
+          "description": "GitHub username or organization name.",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "Invoke-RepoWatch",
+      "description": "Main orchestrator: checks GitHub repos and PSGallery, builds digest, sends email.",
+      "function": "Invoke-RepoWatch",
+      "parameters": {
+        "PSGalleryAuthor": {
+          "type": "String",
+          "description": "Author name to search on PSGallery. Defaults to Owner."
+        },
+        "StatePath": {
+          "type": "String",
+          "description": "Path to the state JSON file. Default: $env:USERPROFILE\\.repowatch\\state.json"
+        },
+        "Owner": {
+          "type": "String",
+          "description": "GitHub username or organization name.",
+          "required": true
+        },
+        "EmailTo": {
+          "type": "String[]",
+          "description": "Recipient email address(es). Required when -SendEmail is specified."
+        },
+        "UseSsl": {
+          "type": "SwitchParameter",
+          "description": "Use SSL/TLS for the SMTP connection."
+        },
+        "SendEmail": {
+          "type": "SwitchParameter",
+          "description": "Send the digest via email."
+        },
+        "SmtpServer": {
+          "type": "String",
+          "description": "SMTP server hostname. Required when -SendEmail is specified."
+        },
+        "EmailFrom": {
+          "type": "String",
+          "description": "Sender email address. Required when -SendEmail is specified."
+        },
+        "IncludePSGallery": {
+          "type": "SwitchParameter",
+          "description": "Include PowerShell Gallery download stats in the digest."
+        },
+        "ExcludeRepos": {
+          "type": "String[]",
+          "description": "Repository names to skip."
+        },
+        "IncludeForks": {
+          "type": "SwitchParameter",
+          "description": "Include forked repositories."
+        },
+        "SinceHours": {
+          "type": "Int32",
+          "description": "Number of hours to look back for activity. Default 24. Range 1-720.",
+          "minimum": 1,
+          "maximum": 720
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Save the HTML report to a local file."
+        },
+        "SkipIfEmpty": {
+          "type": "SwitchParameter",
+          "description": "Do not send email if there is no activity to report."
+        },
+        "Port": {
+          "type": "Int32",
+          "description": "SMTP port. Default 587."
+        },
+        "RepoFilter": {
+          "type": "String[]",
+          "description": "Specific repository names to check."
+        },
+        "SmtpCredential": {
+          "type": "PSCredential",
+          "description": "PSCredential for SMTP authentication."
+        },
+        "Token": {
+          "type": "String",
+          "description": "GitHub personal access token. Falls back to $env:GITHUB_TOKEN."
+        }
+      }
+    },
+    {
+      "name": "Register-RepoWatchTask",
+      "description": "Creates a Windows Scheduled Task to run Invoke-RepoWatch on a schedule.",
+      "function": "Register-RepoWatchTask",
+      "parameters": {
+        "PSGalleryAuthor": {
+          "type": "String",
+          "description": "Author name for PSGallery searches."
+        },
+        "Owner": {
+          "type": "String",
+          "description": "GitHub username or organization name.",
+          "required": true
+        },
+        "EmailTo": {
+          "type": "String",
+          "description": "Recipient email address."
+        },
+        "SmtpServer": {
+          "type": "String",
+          "description": "SMTP server hostname for email delivery."
+        },
+        "TaskName": {
+          "type": "String",
+          "description": "Name for the scheduled task. Default \"GitHub-RepoWatch\"."
+        },
+        "EmailFrom": {
+          "type": "String",
+          "description": "Sender email address."
+        },
+        "Schedule": {
+          "type": "String",
+          "description": "How often to run. Valid: Daily, TwiceDaily, Hourly. Default Daily.",
+          "enum": [
+            "Daily",
+            "TwiceDaily",
+            "Hourly"
+          ]
+        },
+        "SinceHours": {
+          "type": "Int32",
+          "description": "Hours to look back for activity. Automatically set based on Schedule if not specified."
+        },
+        "RunAs": {
+          "type": "String",
+          "description": "Windows account to run the task as. Default is the current user."
+        },
+        "IncludePSGallery": {
+          "type": "SwitchParameter",
+          "description": "Include PSGallery stats in the digest."
+        },
+        "Time": {
+          "type": "String",
+          "description": "Time to run for Daily schedule (HH:mm format). Default \"08:00\"."
+        },
+        "SkipIfEmpty": {
+          "type": "SwitchParameter",
+          "description": "Do not send email when there is no activity."
+        },
+        "Token": {
+          "type": "String",
+          "description": "GitHub personal access token. Stored in the wrapper script."
+        }
+      }
+    },
+    {
+      "name": "Send-ActivityDigest",
+      "description": "Sends an HTML email digest of all GitHub and PSGallery activity.",
+      "function": "Send-ActivityDigest",
+      "parameters": {
+        "UseSsl": {
+          "type": "SwitchParameter",
+          "description": "Use SSL/TLS for the SMTP connection. Default true."
+        },
+        "SmtpServer": {
+          "type": "String",
+          "description": "SMTP server hostname (e.g., \"smtp.gmail.com\").",
+          "required": true
+        },
+        "PSGalleryStats": {
+          "type": "Object[]",
+          "description": "Array of PSGalleryStats objects from Get-PSGalleryStats."
+        },
+        "Activity": {
+          "type": "Object[]",
+          "description": "Array of RepoActivity objects from Get-RepoActivity. Accepts pipeline input."
+        },
+        "EmailFrom": {
+          "type": "String",
+          "description": "Sender email address.",
+          "required": true
+        },
+        "Credential": {
+          "type": "PSCredential",
+          "description": "PSCredential for SMTP authentication."
+        },
+        "Subject": {
+          "type": "String",
+          "description": "Email subject line. Default \"GitHub RepoWatch Digest - {date}\"."
+        },
+        "SkipIfEmpty": {
+          "type": "SwitchParameter",
+          "description": "Do not send the email if there is no activity to report."
+        },
+        "EmailTo": {
+          "type": "String[]",
+          "description": "Recipient email address(es).",
+          "required": true
+        },
+        "Port": {
+          "type": "Int32",
+          "description": "SMTP port. Default 587."
+        }
+      }
+    }
+  ]
+}
