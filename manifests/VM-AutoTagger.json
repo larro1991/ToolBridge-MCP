@@ -1,0 +1,67 @@
+{
+  "module": "VM-AutoTagger",
+  "version": "1.0.0",
+  "description": "Auto-tag VMware vSphere and Hyper-V VMs with OS, hardware tier, compliance status, and custom categories.",
+  "tools": [
+    {
+      "name": "Sync-VMTags",
+      "description": "Connect to vCenter/Hyper-V, enumerate VMs, and apply tags based on metadata and YAML tag profiles. Supports DryRun, Force, and filtering by VM name, cluster, or datacenter.",
+      "parameters": {
+        "Server": { "type": "string", "required": true, "description": "vCenter/ESXi/Hyper-V hostname" },
+        "Hypervisor": { "type": "string", "required": false, "description": "VMware or HyperV (default: VMware)" },
+        "ProfilePath": { "type": "string", "required": false, "description": "Path to YAML tag profile" },
+        "VMName": { "type": "string[]", "required": false, "description": "Filter to specific VMs (wildcards supported)" },
+        "Cluster": { "type": "string", "required": false, "description": "Filter to a specific cluster" },
+        "DryRun": { "type": "switch", "required": false, "description": "Preview changes without applying" },
+        "OutputPath": { "type": "string", "required": false, "description": "Path for HTML sync report" }
+      }
+    },
+    {
+      "name": "Get-VMTagReport",
+      "description": "Generate an HTML dashboard showing tag distribution across VMs with bar charts and detailed tables.",
+      "parameters": {
+        "Server": { "type": "string", "required": true, "description": "vCenter/ESXi/Hyper-V hostname" },
+        "Hypervisor": { "type": "string", "required": false, "description": "VMware or HyperV" },
+        "OutputPath": { "type": "string", "required": true, "description": "HTML report output path" },
+        "Category": { "type": "string[]", "required": false, "description": "Tag categories to include in report" }
+      }
+    },
+    {
+      "name": "Get-VMCompliance",
+      "description": "Check VMs against compliance rules (stale snapshots, missing tools, oversized VMs, orphaned VMs) and return findings with severity ratings.",
+      "parameters": {
+        "Server": { "type": "string", "required": true, "description": "vCenter/ESXi/Hyper-V hostname" },
+        "Hypervisor": { "type": "string", "required": false, "description": "VMware or HyperV" },
+        "Rules": { "type": "string[]", "required": false, "description": "Specific rules to check" },
+        "OutputPath": { "type": "string", "required": false, "description": "HTML compliance report path" }
+      }
+    },
+    {
+      "name": "New-VMTagProfile",
+      "description": "Create or export a YAML tag profile defining tag categories, matching rules, and thresholds.",
+      "parameters": {
+        "OutputPath": { "type": "string", "required": true, "description": "Path to save the YAML profile" },
+        "IncludeCustom": { "type": "switch", "required": false, "description": "Include example custom categories" }
+      }
+    },
+    {
+      "name": "Get-VMDrift",
+      "description": "Detect configuration drift by comparing current VM state against the last Sync-VMTags baseline. Finds added, removed, and changed VMs.",
+      "parameters": {
+        "Server": { "type": "string", "required": true, "description": "vCenter/ESXi/Hyper-V hostname" },
+        "Hypervisor": { "type": "string", "required": false, "description": "VMware or HyperV" },
+        "OutputPath": { "type": "string", "required": false, "description": "HTML drift report path" }
+      }
+    },
+    {
+      "name": "Get-StaleVMs",
+      "description": "Find VMs powered off beyond a threshold with waste cost estimation and remediation recommendations.",
+      "parameters": {
+        "Server": { "type": "string", "required": true, "description": "vCenter/ESXi/Hyper-V hostname" },
+        "Hypervisor": { "type": "string", "required": false, "description": "VMware or HyperV" },
+        "StaleThresholdDays": { "type": "int", "required": false, "description": "Days powered off to be stale (default: 30)" },
+        "OutputPath": { "type": "string", "required": false, "description": "HTML stale VM report path" }
+      }
+    }
+  ]
+}
