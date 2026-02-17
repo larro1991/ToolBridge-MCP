@@ -1,0 +1,257 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: Infra-RunbookEngine",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:\\Users\\larro\\Projects\\Infra-RunbookEngine\\Infra-RunbookEngine.psd1"
+  },
+  "tools": [
+    {
+      "name": "Get-CIHealthScore",
+      "description": "Calculates an aggregate health score (0-100) for one or more configuration items.",
+      "function": "Get-CIHealthScore",
+      "parameters": {
+        "DaysBack": {
+          "type": "Int32",
+          "description": "Number of days of history to consider. Default is 30."
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more computer names to score.",
+          "required": true
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Path to save an HTML health score report."
+        },
+        "IncludeRunbookHistory": {
+          "type": "SwitchParameter",
+          "description": "Include recent runbook execution results in the score calculation."
+        },
+        "ITSMCredential": {
+          "type": "PSCredential",
+          "description": "Credential for ITSM authentication."
+        },
+        "IncludeTicketHistory": {
+          "type": "SwitchParameter",
+          "description": "Include open ticket count from an ITSM provider."
+        },
+        "IncludeChangeHistory": {
+          "type": "SwitchParameter",
+          "description": "Include recent configuration changes (requires Infra-ChangeTracker module)."
+        },
+        "ITSMEndpoint": {
+          "type": "String",
+          "description": "URL or path for the ITSM provider."
+        },
+        "ITSMProvider": {
+          "type": "String",
+          "description": "ITSM provider type for ticket lookup: ServiceNow, Jira, or CSV.",
+          "enum": [
+            "ServiceNow",
+            "Jira",
+            "CSV"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get-RunbookStatus",
+      "description": "Retrieves runbook execution status and history.",
+      "function": "Get-RunbookStatus",
+      "parameters": {
+        "Since": {
+          "type": "DateTime",
+          "description": "Return only executions since this datetime."
+        },
+        "ComputerName": {
+          "type": "String",
+          "description": "Filter executions by target computer name."
+        },
+        "Status": {
+          "type": "String",
+          "description": "Filter by execution status: All, Running, Completed, Failed, Escalated.",
+          "enum": [
+            "All",
+            "Running",
+            "Completed",
+            "Failed",
+            "Escalated"
+          ]
+        },
+        "Last": {
+          "type": "Int32",
+          "description": "Return only the last N executions."
+        },
+        "ExecutionId": {
+          "type": "String",
+          "description": "Specific execution ID (GUID) to retrieve."
+        }
+      }
+    },
+    {
+      "name": "Get-ShiftHandoff",
+      "description": "Generates a shift handoff report summarizing runbook activity, escalations, and pending approvals.",
+      "function": "Get-ShiftHandoff",
+      "parameters": {
+        "SmtpServer": {
+          "type": "String",
+          "description": "SMTP server for email delivery."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "File path to save the HTML handoff report."
+        },
+        "EmailFrom": {
+          "type": "String",
+          "description": "Sender email address."
+        },
+        "SmtpCredential": {
+          "type": "PSCredential",
+          "description": "Credential for SMTP authentication."
+        },
+        "UseSsl": {
+          "type": "SwitchParameter",
+          "description": "Use SSL for SMTP connection."
+        },
+        "IncludePendingApprovals": {
+          "type": "Boolean",
+          "description": "Include any pending approval requests. Default is true."
+        },
+        "HoursBack": {
+          "type": "Int32",
+          "description": "Number of hours to look back for the report. Default is 8 (one shift)."
+        },
+        "IncludeRunbookActivity": {
+          "type": "Boolean",
+          "description": "Include runbook execution activity in the report. Default is true."
+        },
+        "SendEmail": {
+          "type": "SwitchParameter",
+          "description": "Send the report via email."
+        },
+        "IncludeAlerts": {
+          "type": "Boolean",
+          "description": "Include alerts and escalations. Default is true."
+        },
+        "EmailTo": {
+          "type": "String[]",
+          "description": "Recipient email address(es)."
+        }
+      }
+    },
+    {
+      "name": "Invoke-Runbook",
+      "description": "Executes a YAML-defined runbook as a decision tree against one or more target computers.",
+      "function": "Invoke-Runbook",
+      "parameters": {
+        "RequireApproval": {
+          "type": "SwitchParameter",
+          "description": "Pause at steps marked requires_approval and wait for approval before proceeding."
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more target computer names to execute the runbook against."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory path where the HTML execution report will be saved."
+        },
+        "Parameters": {
+          "type": "Hashtable",
+          "description": "Hashtable of additional parameters to pass to the runbook steps."
+        },
+        "ApprovalMethod": {
+          "type": "String",
+          "description": "Communication channel for approval requests: Console, Email, Teams, or Slack.",
+          "enum": [
+            "Console",
+            "Email",
+            "Teams",
+            "Slack"
+          ]
+        },
+        "ApprovalContact": {
+          "type": "String",
+          "description": "Email address or webhook URL for the approval method."
+        },
+        "Force": {
+          "type": "SwitchParameter",
+          "description": "Skip all approval requirements and execute without pausing."
+        },
+        "RunbookName": {
+          "type": "String",
+          "description": "Name of a built-in template (e.g., 'high-cpu') or full path to a YAML runbook file.",
+          "required": true
+        },
+        "SkipBlastRadiusCheck": {
+          "type": "SwitchParameter",
+          "description": "Skip the blast radius assessment before executing remediation steps."
+        }
+      }
+    },
+    {
+      "name": "New-Runbook",
+      "description": "Creates a new runbook from a built-in template or generates one using AI from ITSM ticket history.",
+      "function": "New-Runbook",
+      "parameters": {
+        "Name": {
+          "type": "String",
+          "description": "Name for the new runbook (used as the filename without extension).",
+          "required": true
+        },
+        "FromTemplate": {
+          "type": "String",
+          "description": "Name of a built-in template to use as the base (e.g., 'high-cpu', 'disk-space')."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory where the generated YAML file will be saved. Defaults to the engine runbooks directory."
+        },
+        "ITSMCredential": {
+          "type": "PSCredential",
+          "description": "PSCredential for authenticating with the ITSM provider."
+        },
+        "Model": {
+          "type": "String",
+          "description": "Specific model to use with the AI provider."
+        },
+        "Provider": {
+          "type": "String",
+          "description": "AI provider for runbook generation: Anthropic, OpenAI, Ollama, or Custom.",
+          "enum": [
+            "Anthropic",
+            "OpenAI",
+            "Ollama",
+            "Custom"
+          ]
+        },
+        "CIName": {
+          "type": "String",
+          "description": "Configuration Item name to generate the runbook for."
+        },
+        "ITSMEndpoint": {
+          "type": "String",
+          "description": "URL or path to the ITSM source (API endpoint or CSV file path)."
+        },
+        "ApiKey": {
+          "type": "String",
+          "description": "API key for the AI provider."
+        },
+        "FromTicketHistory": {
+          "type": "SwitchParameter",
+          "description": "Switch to generate a runbook from ITSM ticket history using AI."
+        },
+        "ITSMProvider": {
+          "type": "String",
+          "description": "ITSM provider type: ServiceNow, Jira, or CSV.",
+          "enum": [
+            "ServiceNow",
+            "Jira",
+            "CSV"
+          ]
+        }
+      }
+    }
+  ]
+}
