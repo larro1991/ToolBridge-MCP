@@ -1,0 +1,323 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: ITSM-Insights",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:/Users/larro/Projects/ITSM-Insights"
+  },
+  "tools": [
+    {
+      "name": "Get-CIHistory",
+      "description": "Pulls all tickets for a Configuration Item and generates an AI-powered summary.",
+      "function": "Get-CIHistory",
+      "parameters": {
+        "OutputPath": {
+          "type": "String"
+        },
+        "Instance": {
+          "type": "String"
+        },
+        "ApiKey": {
+          "type": "String"
+        },
+        "CIName": {
+          "type": "String",
+          "required": true
+        },
+        "Email": {
+          "type": "String"
+        },
+        "SkipAI": {
+          "type": "SwitchParameter"
+        },
+        "MonthsBack": {
+          "type": "Int32",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "Credential": {
+          "type": "PSCredential"
+        },
+        "FilePath": {
+          "type": "String"
+        },
+        "AIApiKey": {
+          "type": "String"
+        },
+        "AIModel": {
+          "type": "String"
+        },
+        "AIProvider": {
+          "type": "String",
+          "enum": [
+            "Anthropic",
+            "OpenAI",
+            "Ollama",
+            "Custom"
+          ]
+        },
+        "BaseUrl": {
+          "type": "String"
+        },
+        "AIEndpoint": {
+          "type": "String"
+        },
+        "Provider": {
+          "type": "String",
+          "enum": [
+            "ServiceNow",
+            "Jira",
+            "File"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get-KnowledgeGaps",
+      "description": "Identifies tickets that should have KB articles but don't, or KB articles that are stale/incomplete.",
+      "function": "Get-KnowledgeGaps",
+      "parameters": {
+        "Instance": {
+          "type": "String"
+        },
+        "ApiKey": {
+          "type": "String"
+        },
+        "OutputPath": {
+          "type": "String"
+        },
+        "Email": {
+          "type": "String"
+        },
+        "SkipAI": {
+          "type": "SwitchParameter"
+        },
+        "MonthsBack": {
+          "type": "Int32",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "Credential": {
+          "type": "PSCredential"
+        },
+        "FilePath": {
+          "type": "String"
+        },
+        "IncludeExistingKB": {
+          "type": "SwitchParameter"
+        },
+        "AIApiKey": {
+          "type": "String"
+        },
+        "MinOccurrences": {
+          "type": "Int32"
+        },
+        "AIModel": {
+          "type": "String"
+        },
+        "AIProvider": {
+          "type": "String",
+          "enum": [
+            "Anthropic",
+            "OpenAI",
+            "Ollama",
+            "Custom"
+          ]
+        },
+        "BaseUrl": {
+          "type": "String"
+        },
+        "AIEndpoint": {
+          "type": "String"
+        },
+        "Provider": {
+          "type": "String",
+          "enum": [
+            "ServiceNow",
+            "Jira",
+            "File"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get-RecurringIssues",
+      "description": "Analyzes tickets to identify recurring issues and patterns using AI.",
+      "function": "Get-RecurringIssues",
+      "parameters": {
+        "OutputPath": {
+          "type": "String"
+        },
+        "Instance": {
+          "type": "String"
+        },
+        "ApiKey": {
+          "type": "String"
+        },
+        "CIName": {
+          "type": "String"
+        },
+        "Email": {
+          "type": "String"
+        },
+        "SkipAI": {
+          "type": "SwitchParameter"
+        },
+        "MonthsBack": {
+          "type": "Int32",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "Credential": {
+          "type": "PSCredential"
+        },
+        "FilePath": {
+          "type": "String"
+        },
+        "AIApiKey": {
+          "type": "String"
+        },
+        "MinOccurrences": {
+          "type": "Int32"
+        },
+        "AIModel": {
+          "type": "String"
+        },
+        "AIProvider": {
+          "type": "String",
+          "enum": [
+            "Anthropic",
+            "OpenAI",
+            "Ollama",
+            "Custom"
+          ]
+        },
+        "BaseUrl": {
+          "type": "String"
+        },
+        "AIEndpoint": {
+          "type": "String"
+        },
+        "Provider": {
+          "type": "String",
+          "enum": [
+            "ServiceNow",
+            "Jira",
+            "File"
+          ]
+        },
+        "Category": {
+          "type": "String"
+        }
+      }
+    },
+    {
+      "name": "Get-UserTicketHistory",
+      "description": "Retrieves all tickets for a user (as requester, assignee, or mentioned) and generates an AI summary.",
+      "function": "Get-UserTicketHistory",
+      "parameters": {
+        "Instance": {
+          "type": "String"
+        },
+        "ApiKey": {
+          "type": "String"
+        },
+        "OutputPath": {
+          "type": "String"
+        },
+        "Email": {
+          "type": "String"
+        },
+        "SkipAI": {
+          "type": "SwitchParameter"
+        },
+        "MonthsBack": {
+          "type": "Int32",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "Credential": {
+          "type": "PSCredential"
+        },
+        "FilePath": {
+          "type": "String"
+        },
+        "UserIdentity": {
+          "type": "String",
+          "required": true
+        },
+        "AIModel": {
+          "type": "String"
+        },
+        "AIApiKey": {
+          "type": "String"
+        },
+        "AIProvider": {
+          "type": "String",
+          "enum": [
+            "Anthropic",
+            "OpenAI",
+            "Ollama",
+            "Custom"
+          ]
+        },
+        "Role": {
+          "type": "String",
+          "enum": [
+            "All",
+            "Requester",
+            "Assignee",
+            "Both"
+          ]
+        },
+        "BaseUrl": {
+          "type": "String"
+        },
+        "AIEndpoint": {
+          "type": "String"
+        },
+        "Provider": {
+          "type": "String",
+          "enum": [
+            "ServiceNow",
+            "Jira",
+            "File"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Sync-KnowledgeArticles",
+      "description": "Pushes new or updated knowledge articles to ServiceNow as drafts.",
+      "function": "Sync-KnowledgeArticles",
+      "parameters": {
+        "Credential": {
+          "type": "PSCredential"
+        },
+        "Instance": {
+          "type": "String"
+        },
+        "KnowledgeBase": {
+          "type": "String",
+          "description": "ServiceNow Knowledge Base sys_id"
+        },
+        "Articles": {
+          "type": "Object[]",
+          "required": true
+        },
+        "OutputDirectory": {
+          "type": "String"
+        },
+        "ReviewOnly": {
+          "type": "SwitchParameter"
+        },
+        "ApiKey": {
+          "type": "String"
+        },
+        "Category": {
+          "type": "String"
+        }
+      }
+    }
+  ]
+}

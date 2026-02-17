@@ -1,0 +1,154 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: Admin-MorningBrief",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:/Users/larro/Projects/Admin-MorningBrief"
+  },
+  "tools": [
+    {
+      "name": "Get-AccountAlerts",
+      "description": "Checks Active Directory for account-related issues that need attention.",
+      "function": "Get-AccountAlerts",
+      "parameters": {
+        "DaysPasswordExpiry": {
+          "type": "Int32",
+          "description": "Warn when a user's password expires within this many days.  Default 14.",
+          "minimum": 1,
+          "maximum": 365
+        },
+        "SearchBase": {
+          "type": "String",
+          "description": "Optional OU distinguished name to limit the search scope."
+        }
+      }
+    },
+    {
+      "name": "Get-ExpirationAlerts",
+      "description": "Checks for certificates, accounts, and resources approaching expiration.",
+      "function": "Get-ExpirationAlerts",
+      "parameters": {
+        "DaysPasswordExpiry": {
+          "type": "Int32",
+          "description": "Warn when a service account password expires within this many days.  Default 14.",
+          "minimum": 1,
+          "maximum": 365
+        },
+        "DaysCertExpiry": {
+          "type": "Int32",
+          "description": "Warn when a certificate expires within this many days.  Default 30.",
+          "minimum": 1,
+          "maximum": 365
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "Servers whose certificate stores should be checked.  If omitted, only the local\r\nmachine is checked."
+        },
+        "DaysAccountExpiry": {
+          "type": "Int32",
+          "description": "Warn when a user account expiration date is within this many days.  Default 14.",
+          "minimum": 1,
+          "maximum": 365
+        }
+      }
+    },
+    {
+      "name": "Get-InfrastructureAlerts",
+      "description": "Checks server infrastructure health across one or more remote machines.",
+      "function": "Get-InfrastructureAlerts",
+      "parameters": {
+        "DiskThresholdPercent": {
+          "type": "Int32",
+          "description": "Disk usage percentage at which to warn.  Default 90.  Usage above 95% is flagged\r\nas Critical; above 90% as High.",
+          "minimum": 50,
+          "maximum": 100
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more server names or IP addresses to check.",
+          "required": true
+        },
+        "UptimeThresholdDays": {
+          "type": "Int32",
+          "description": "Flag servers that have been running longer than this without a reboot.  Default 90.",
+          "minimum": 1,
+          "maximum": 365
+        }
+      }
+    },
+    {
+      "name": "Get-SecurityAlerts",
+      "description": "Retrieves security-focused alerts from Active Directory and optionally Microsoft 365 / Entra ID.",
+      "function": "Get-SecurityAlerts",
+      "parameters": {
+        "IncludeM365": {
+          "type": "SwitchParameter",
+          "description": "When set, also queries Microsoft Graph for risky sign-ins and risky users.\r\nRequires the Microsoft.Graph PowerShell module and an authenticated session\r\n(Connect-MgGraph)."
+        },
+        "FailedLoginThreshold": {
+          "type": "Int32",
+          "description": "Number of failed logins per user before raising an alert.  Default 10.",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "HoursBack": {
+          "type": "Int32",
+          "description": "How far back to look for security events.  Default 24.",
+          "minimum": 1,
+          "maximum": 168
+        }
+      }
+    },
+    {
+      "name": "Invoke-MorningBrief",
+      "description": "Morning Command Center - one command to see everything that needs attention today.",
+      "function": "Invoke-MorningBrief",
+      "parameters": {
+        "EmailTo": {
+          "type": "String[]",
+          "description": "Recipient address(es) (required when -SendEmail is used)."
+        },
+        "DaysPasswordExpiry": {
+          "type": "Int32",
+          "description": "Warn when passwords expire within this many days.  Default 14.",
+          "minimum": 1,
+          "maximum": 365
+        },
+        "IncludeM365": {
+          "type": "SwitchParameter",
+          "description": "Also check Microsoft 365 / Entra ID for risky sign-ins and risky users."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory where the HTML report is saved.  Defaults to .\\Reports."
+        },
+        "EmailFrom": {
+          "type": "String",
+          "description": "Sender address (required when -SendEmail is used)."
+        },
+        "AutoRefreshSeconds": {
+          "type": "Int32",
+          "description": "If set, the HTML report includes a meta-refresh tag so it reloads automatically.\r\nUseful when the report is displayed on a wall monitor."
+        },
+        "SendEmail": {
+          "type": "SwitchParameter",
+          "description": "Send the HTML report by e-mail after generation."
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "Servers to include in infrastructure and certificate checks.  If omitted,\r\ninfrastructure checks are skipped and only the local machine is checked for\r\ncertificates."
+        },
+        "SmtpServer": {
+          "type": "String",
+          "description": "SMTP relay server (required when -SendEmail is used)."
+        },
+        "DaysCertExpiry": {
+          "type": "Int32",
+          "description": "Warn when certificates expire within this many days.  Default 30.",
+          "minimum": 1,
+          "maximum": 365
+        }
+      }
+    }
+  ]
+}

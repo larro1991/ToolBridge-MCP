@@ -1,0 +1,172 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: Infra-LivingDoc",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:\\Users\\larro\\Projects\\Infra-LivingDoc\\Infra-LivingDoc.psd1"
+  },
+  "tools": [
+    {
+      "name": "Import-Documentation",
+      "description": "Reads documents and extracts raw text content. Supports Word (.docx), Excel (.xlsx), Markdown, Text, and CSV without requiring Office.",
+      "function": "Import-Documentation",
+      "parameters": {
+        "Path": {
+          "type": "String[]",
+          "description": "File or folder path to import. Supports wildcards.",
+          "required": true
+        },
+        "Recurse": {
+          "type": "SwitchParameter",
+          "description": "Scan subfolders."
+        },
+        "FileType": {
+          "type": "String",
+          "description": "Filter by file type.",
+          "enum": ["All", "Word", "Excel", "Markdown", "Text", "CSV"]
+        }
+      }
+    },
+    {
+      "name": "Extract-EnvironmentFacts",
+      "description": "Sends document text to an AI LLM and receives structured, verifiable facts about the IT environment.",
+      "function": "Extract-EnvironmentFacts",
+      "parameters": {
+        "DocumentText": {
+          "type": "String",
+          "description": "Raw text content from Import-Documentation.",
+          "required": true
+        },
+        "SourceDocument": {
+          "type": "String",
+          "description": "Filename for tracking."
+        },
+        "Provider": {
+          "type": "String",
+          "description": "AI provider to use.",
+          "enum": ["Anthropic", "OpenAI", "Ollama", "Custom"]
+        },
+        "ApiKey": {
+          "type": "String",
+          "description": "API key for the AI provider."
+        },
+        "Model": {
+          "type": "String",
+          "description": "Model name to use."
+        },
+        "Endpoint": {
+          "type": "String",
+          "description": "Custom API endpoint URL."
+        },
+        "FactsPath": {
+          "type": "String",
+          "description": "Path to save/append facts JSON."
+        }
+      }
+    },
+    {
+      "name": "Test-EnvironmentFacts",
+      "description": "Verifies each fact in the database against the live environment using AD, DNS, CIM, and other checks.",
+      "function": "Test-EnvironmentFacts",
+      "parameters": {
+        "FactsPath": {
+          "type": "String",
+          "description": "Path to facts.json file.",
+          "required": true
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "Additional servers to check via CIM."
+        },
+        "Credential": {
+          "type": "PSCredential",
+          "description": "Credential for remote server access."
+        },
+        "SkipUnreachable": {
+          "type": "SwitchParameter",
+          "description": "Skip servers that were unreachable on last run."
+        }
+      }
+    },
+    {
+      "name": "Get-DocumentationDrift",
+      "description": "Full pipeline: import docs, extract facts via AI, verify against live environment, and generate drift report.",
+      "function": "Get-DocumentationDrift",
+      "parameters": {
+        "DocumentPath": {
+          "type": "String[]",
+          "description": "Path to documents to process.",
+          "required": true
+        },
+        "FactsPath": {
+          "type": "String",
+          "description": "Path to facts database JSON."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory for HTML drift report."
+        },
+        "Provider": {
+          "type": "String",
+          "description": "AI provider.",
+          "enum": ["Anthropic", "OpenAI", "Ollama", "Custom"]
+        },
+        "ApiKey": {
+          "type": "String",
+          "description": "API key for AI provider."
+        },
+        "Model": {
+          "type": "String",
+          "description": "AI model name."
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "Servers to verify against."
+        },
+        "SkipExtraction": {
+          "type": "SwitchParameter",
+          "description": "Use existing facts, just re-verify."
+        }
+      }
+    },
+    {
+      "name": "Update-Documentation",
+      "description": "Sends original doc and drift results to AI to generate a corrected version with changes highlighted.",
+      "function": "Update-Documentation",
+      "parameters": {
+        "DocumentPath": {
+          "type": "String",
+          "description": "Path to original document.",
+          "required": true
+        },
+        "FactsPath": {
+          "type": "String",
+          "description": "Path to verified facts.json.",
+          "required": true
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory for updated document."
+        },
+        "Format": {
+          "type": "String",
+          "description": "Output format.",
+          "enum": ["Markdown", "HTML"]
+        },
+        "Provider": {
+          "type": "String",
+          "description": "AI provider.",
+          "enum": ["Anthropic", "OpenAI", "Ollama", "Custom"]
+        },
+        "ApiKey": {
+          "type": "String",
+          "description": "API key."
+        },
+        "HighlightChanges": {
+          "type": "SwitchParameter",
+          "description": "Mark corrections with [UPDATED] tags."
+        }
+      }
+    }
+  ]
+}

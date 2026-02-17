@@ -1,0 +1,123 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: Infra-ChangeTracker",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:/Users/larro/Projects/Infra-ChangeTracker"
+  },
+  "tools": [
+    {
+      "name": "Get-ADChanges",
+      "description": "Detects Active Directory changes using replication metadata and event logs.",
+      "function": "Get-ADChanges",
+      "parameters": {
+        "SearchBase": {
+          "type": "String",
+          "description": "Optional OU distinguished name to scope the search."
+        },
+        "HoursBack": {
+          "type": "Int32",
+          "description": "Number of hours to look back for changes. Default is 24. Range: 1-720.",
+          "minimum": 1,
+          "maximum": 720
+        },
+        "ChangeType": {
+          "type": "String",
+          "description": "Filter by object type: All, Users, Groups, Computers, OUs. Default is All.",
+          "enum": [
+            "All",
+            "Users",
+            "Groups",
+            "Computers",
+            "OUs"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get-DNSChanges",
+      "description": "Detects DNS record changes within a specified timeframe.",
+      "function": "Get-DNSChanges",
+      "parameters": {
+        "ZoneName": {
+          "type": "String[]",
+          "description": "Optional array of specific zone names to check. If omitted, all\r\nAD-integrated zones are queried."
+        },
+        "HoursBack": {
+          "type": "Int32",
+          "description": "Number of hours to look back for changes. Default is 24. Range: 1-720.",
+          "minimum": 1,
+          "maximum": 720
+        }
+      }
+    },
+    {
+      "name": "Get-GPOChanges",
+      "description": "Detects Group Policy Object changes within a specified timeframe.",
+      "function": "Get-GPOChanges",
+      "parameters": {
+        "HoursBack": {
+          "type": "Int32",
+          "description": "Number of hours to look back for changes. Default is 24. Range: 1-720.",
+          "minimum": 1,
+          "maximum": 720
+        },
+        "IncludeLinkChanges": {
+          "type": "SwitchParameter",
+          "description": "Switch to include GPO link changes on OUs."
+        }
+      }
+    },
+    {
+      "name": "Get-ServerConfigChanges",
+      "description": "Detects server configuration changes on remote servers.",
+      "function": "Get-ServerConfigChanges",
+      "parameters": {
+        "ComputerName": {
+          "type": "String[]",
+          "description": "One or more server hostnames or IP addresses to check. Mandatory.",
+          "required": true
+        },
+        "HoursBack": {
+          "type": "Int32",
+          "description": "Number of hours to look back for changes. Default is 24. Range: 1-720.",
+          "minimum": 1,
+          "maximum": 720
+        }
+      }
+    },
+    {
+      "name": "Invoke-ChangeAudit",
+      "description": "Main orchestrator - runs all change detection and generates a consolidated report.",
+      "function": "Invoke-ChangeAudit",
+      "parameters": {
+        "IncludeDNS": {
+          "type": "SwitchParameter",
+          "description": "Switch to include DNS change detection."
+        },
+        "BaselinePath": {
+          "type": "String",
+          "description": "Optional path to a previous snapshot JSON file for baseline comparison mode."
+        },
+        "IncludeServerConfig": {
+          "type": "SwitchParameter",
+          "description": "Switch to include server configuration change detection."
+        },
+        "HoursBack": {
+          "type": "Int32",
+          "description": "Number of hours to look back for changes. Default is 24. Range: 1-720.",
+          "minimum": 1,
+          "maximum": 720
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Directory path for report output. Default is .\\Reports."
+        },
+        "ComputerName": {
+          "type": "String[]",
+          "description": "Server names for server configuration checks (used with -IncludeServerConfig)."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "version": "1.0",
+  "description": "Auto-generated from PowerShell module: Admin-UserLookup",
+  "defaults": {
+    "runtime": "powershell",
+    "module": "C:/Users/larro/Projects/Admin-UserLookup"
+  },
+  "tools": [
+    {
+      "name": "Get-UserADDetails",
+      "description": "Retrieves comprehensive Active Directory details for a user.",
+      "function": "Get-UserADDetails",
+      "parameters": {
+        "Identity": {
+          "type": "String",
+          "description": "User identifier: SAMAccountName, UPN, email address, or display name.",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "Get-UserDevices",
+      "description": "Retrieves Intune/Entra device information for a user.",
+      "function": "Get-UserDevices",
+      "parameters": {
+        "Identity": {
+          "type": "String",
+          "description": "User Principal Name (UPN) of the target user.",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "Get-UserEverything",
+      "description": "Universal user lookup - returns everything about a user from AD, M365, Intune, and sign-in logs.",
+      "function": "Get-UserEverything",
+      "parameters": {
+        "IncludeSignInHistory": {
+          "type": "SwitchParameter",
+          "description": "Include sign-in history and risk detections. Off by default because the\r\naudit log queries can be slower and require Entra ID P1/P2."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "Optional file path for an HTML dashboard report. Parent directory will be\r\ncreated if it does not exist."
+        },
+        "Identity": {
+          "type": "String",
+          "description": "User identifier: SAMAccountName, UPN, email address, or display name.",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "Get-UserM365Details",
+      "description": "Retrieves Microsoft 365 details for a user via Microsoft Graph.",
+      "function": "Get-UserM365Details",
+      "parameters": {
+        "Identity": {
+          "type": "String",
+          "description": "User Principal Name (UPN) of the target user.",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "Get-UserSignInHistory",
+      "description": "Retrieves recent sign-in activity and risk detections for a user.",
+      "function": "Get-UserSignInHistory",
+      "parameters": {
+        "Identity": {
+          "type": "String",
+          "description": "User Principal Name (UPN) of the target user.",
+          "required": true
+        },
+        "DaysBack": {
+          "type": "Int32",
+          "description": "Number of days to look back for sign-in history. Default 7, range 1-90.",
+          "minimum": 1,
+          "maximum": 90
+        }
+      }
+    }
+  ]
+}
