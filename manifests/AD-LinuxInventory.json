@@ -3,7 +3,7 @@
   "description": "Auto-generated from PowerShell module: AD-LinuxInventory",
   "defaults": {
     "runtime": "powershell",
-    "module": "C:/Users/larro/Projects/AD-LinuxInventory"
+    "module": "C:\\Users\\larro\\Projects\\AD-LinuxInventory\\AD-LinuxInventory.psd1"
   },
   "tools": [
     {
@@ -11,17 +11,76 @@
       "description": "Lists all registered Linux servers from the Active Directory OU.",
       "function": "Get-LinuxInventory",
       "parameters": {
-        "OutputPath": {
-          "type": "String",
-          "description": "If specified, generates an HTML dashboard report at this file path."
-        },
         "Online": {
           "type": "SwitchParameter",
           "description": "Ping each server to determine online/offline status. Adds an Online property\r\n(True/False) and ResponseTime (ms) to the output."
         },
+        "OutputPath": {
+          "type": "String",
+          "description": "If specified, generates an HTML dashboard report at this file path."
+        },
         "OrganizationalUnit": {
           "type": "String",
           "description": "OU to query. Defaults to \"OU=Linux Servers\" under the domain root."
+        }
+      }
+    },
+    {
+      "name": "Get-RegistrationHeartbeat",
+      "description": "Shows heartbeat status for all registered non-Windows systems.",
+      "function": "Get-RegistrationHeartbeat",
+      "parameters": {
+        "RegistrationPath": {
+          "type": "String",
+          "description": "Path to the shared folder where agents drop their JSON heartbeat files."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "If specified, generates an HTML dashboard report at this file path."
+        },
+        "StaleHours": {
+          "type": "Int32",
+          "description": "Number of hours without a heartbeat before a system is flagged as Stale.\r\nDefault: 2 hours.",
+          "minimum": 1,
+          "maximum": 8760
+        },
+        "OfflineHours": {
+          "type": "Int32",
+          "description": "Number of hours without a heartbeat before a system is flagged as Offline.\r\nDefault: 24 hours.",
+          "minimum": 1,
+          "maximum": 8760
+        },
+        "OrganizationalUnit": {
+          "type": "String",
+          "description": "OU to query for registered systems. Defaults to \"OU=Non-Windows Servers\"\r\nunder the domain root."
+        }
+      }
+    },
+    {
+      "name": "Import-AgentRegistration",
+      "description": "Processes JSON registration files dropped by self-registration agents.",
+      "function": "Import-AgentRegistration",
+      "parameters": {
+        "RegistrationPath": {
+          "type": "String",
+          "description": "Path to the shared folder containing JSON registration files from agents.",
+          "required": true
+        },
+        "Token": {
+          "type": "String",
+          "description": "Expected shared secret. If specified, JSON files with a mismatched token are\r\nrejected. If not specified, token validation is skipped."
+        },
+        "AutoApprove": {
+          "type": "SwitchParameter",
+          "description": "Skip confirmation prompts for new registrations. Updates are always\r\nauto-approved regardless of this switch."
+        },
+        "OutputPath": {
+          "type": "String",
+          "description": "If specified, generates an HTML report of the processing results."
+        },
+        "OrganizationalUnit": {
+          "type": "String",
+          "description": "Target OU for new computer objects. Defaults to \"OU=Non-Windows Servers\"\r\nunder the domain root."
         }
       }
     },
@@ -50,35 +109,35 @@
       "description": "Creates a computer object in Active Directory for a Linux server.",
       "function": "Register-LinuxServer",
       "parameters": {
-        "Name": {
+        "OperatingSystemVersion": {
           "type": "String",
-          "description": "The hostname of the Linux server (used as the AD computer name).",
-          "required": true
+          "description": "Optional OS version string (e.g., \"22.04 LTS\", \"9.3\")."
+        },
+        "Force": {
+          "type": "SwitchParameter",
+          "description": "Overwrite the existing computer object if one already exists with the same name."
         },
         "ManagedBy": {
           "type": "String",
           "description": "Distinguished name or SAMAccountName of the user who manages this server."
         },
-        "OrganizationalUnit": {
+        "Name": {
           "type": "String",
-          "description": "Target OU for the computer object. Defaults to \"OU=Linux Servers\" under the\r\ndomain root. Provide a full distinguished name for a specific location."
+          "description": "The hostname of the Linux server (used as the AD computer name).",
+          "required": true
         },
         "IPAddress": {
           "type": "String",
           "description": "The IPv4 address of the server.",
           "required": true
         },
-        "OperatingSystemVersion": {
-          "type": "String",
-          "description": "Optional OS version string (e.g., \"22.04 LTS\", \"9.3\")."
-        },
         "Description": {
           "type": "String",
           "description": "Optional description for the computer object."
         },
-        "Force": {
-          "type": "SwitchParameter",
-          "description": "Overwrite the existing computer object if one already exists with the same name."
+        "OrganizationalUnit": {
+          "type": "String",
+          "description": "Target OU for the computer object. Defaults to \"OU=Linux Servers\" under the\r\ndomain root. Provide a full distinguished name for a specific location."
         },
         "OperatingSystem": {
           "type": "String",
@@ -91,6 +150,10 @@
       "description": "Pings all registered Linux servers and reports their online/offline status.",
       "function": "Sync-LinuxInventory",
       "parameters": {
+        "TimeoutMs": {
+          "type": "Int32",
+          "description": "Ping timeout in milliseconds. Defaults to 1000."
+        },
         "UpdateDescription": {
           "type": "SwitchParameter",
           "description": "When specified, appends a timestamp tag to the AD description:\r\n- Online:  \"[Last Seen: yyyy-MM-dd HH:mm]\"\r\n- Offline: \"[OFFLINE since: yyyy-MM-dd HH:mm]\""
@@ -98,10 +161,6 @@
         "OrganizationalUnit": {
           "type": "String",
           "description": "OU to query. Defaults to \"OU=Linux Servers\" under the domain root."
-        },
-        "TimeoutMs": {
-          "type": "Int32",
-          "description": "Ping timeout in milliseconds. Defaults to 1000."
         }
       }
     },
@@ -110,30 +169,30 @@
       "description": "Updates properties of an existing Linux server entry in Active Directory.",
       "function": "Update-LinuxServer",
       "parameters": {
-        "Name": {
+        "OperatingSystemVersion": {
           "type": "String",
-          "description": "The hostname of the Linux server to update. Accepts pipeline input.",
-          "required": true
+          "description": "Updated OS version string."
         },
         "ManagedBy": {
           "type": "String",
           "description": "Distinguished name or SAMAccountName of the new manager."
         },
-        "OrganizationalUnit": {
+        "Name": {
           "type": "String",
-          "description": "OU where the server resides. Used to scope the lookup. Defaults to\r\n\"OU=Linux Servers\" under the domain root."
+          "description": "The hostname of the Linux server to update. Accepts pipeline input.",
+          "required": true
         },
         "IPAddress": {
           "type": "String",
           "description": "New IPv4 address for the server."
         },
-        "OperatingSystemVersion": {
-          "type": "String",
-          "description": "Updated OS version string."
-        },
         "Description": {
           "type": "String",
           "description": "Updated description."
+        },
+        "OrganizationalUnit": {
+          "type": "String",
+          "description": "OU where the server resides. Used to scope the lookup. Defaults to\r\n\"OU=Linux Servers\" under the domain root."
         },
         "OperatingSystem": {
           "type": "String",
